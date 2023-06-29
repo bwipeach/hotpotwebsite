@@ -1,0 +1,56 @@
+{{!-- <div class="mt-4">
+  <h3>Add topping</h3>
+  <form class="mt-4" method="post" action="/toppings/store">
+      <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name = "name">
+      </div>
+      <div class="form-group">
+          <label for="type">Type</label>
+          <input type="text" class="form-control" id="type" name = "type">
+      </div>
+      <div class="form-group">
+          <label for="description">Description</label>
+          <input type="text" class="form-control" id="description" name = "description">
+      </div>
+      <div class="form-group">
+          <label for="price">price</label>
+          <input type="text" class="form-control" id="price" name = "price">
+      </div>
+      <div class="form-group">
+          <label for="image">Image</label>
+          <input type="text" class="form-control" id="image" name = "image">
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div> --}}
+
+
+<div class="all-page-title page-breadcrumb">
+	<div class="container text-center">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1>Thêm topping</h1>
+			</div>
+		</div>
+	</div>
+</div>
+<form method="post" action="/toppings/store">
+  <div class="mb-3" >
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" name="name">
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <input type="text" class="form-control" id="description" name="description">
+  </div>
+  <div class="mb-3 form-check">
+    <label class="form-label" for="price">Price</label>
+    <input type="text" class="form-control" id="price" name="price">
+  </div>
+  <div class="mb-3 form-check">
+    <label class="form-label" for="image">Image</label>
+    <input type="text" class="form-control" id="image" name = "image">
+  </div>
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>

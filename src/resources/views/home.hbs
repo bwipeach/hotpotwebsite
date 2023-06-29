@@ -1,0 +1,205 @@
+{{!-- <div class="mt-4">
+    <div class="row">
+        {{#each hotpot}}
+            <div class="col-sm-6 col-lg-4" >
+                <div class="card-item">
+                    <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <p class="card-text">Description: {{this.description}}</p>
+                        <p class="card-text">Price: {{this.price}}</p>
+                        <a href="/hotpots/{{this.slug}}" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div> --}}
+
+<!-- Start slides -->
+<div id='carouselExampleIndicators' class='carousel slide'>
+    <div class='carousel-indicators'>
+        <button
+            type='button'
+            data-bs-target='#carouselExampleIndicators'
+            data-bs-slide-to='0'
+            class='active'
+            aria-current='true'
+            aria-label='Slide 1'
+        ></button>
+        <button
+            type='button'
+            data-bs-target='#carouselExampleIndicators'
+            data-bs-slide-to='1'
+            aria-label='Slide 2'
+        ></button>
+        <button
+            type='button'
+            data-bs-target='#carouselExampleIndicators'
+            data-bs-slide-to='2'
+            aria-label='Slide 3'
+        ></button>
+    </div>
+    <div class='carousel-inner'>
+        <div class='carousel-item active'>
+            <img src='image/slide1.jpg' class='d-block w-100' alt='...' />
+        </div>
+        <div class='carousel-item'>
+            <img src='image/slide2.jpg' class='d-block w-100' alt='...' />
+        </div>
+        <div class='carousel-item'>
+            <img src='image/slide3.jpg' class='d-block w-100' alt='...' />
+        </div>
+    </div>
+    <button
+        class='carousel-control-prev'
+        type='button'
+        data-bs-target='#carouselExampleIndicators'
+        data-bs-slide='prev'
+    >
+        <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+        <span class='visually-hidden'>Previous</span>
+    </button>
+    <button
+        class='carousel-control-next'
+        type='button'
+        data-bs-target='#carouselExampleIndicators'
+        data-bs-slide='next'
+    >
+        <span class='carousel-control-next-icon' aria-hidden='true'></span>
+        <span class='visually-hidden'>Next</span>
+    </button>
+</div>
+<!-- End slides -->
+
+<!-- Start About -->
+<div class='about-section-box'>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-lg-6 col-md-6 col-sm-12 text-center'>
+                <div class='inner-column'>
+                    <h1>Welcome To <span>Live Dinner Restaurant</span></h1>
+                    <h4>Little Story</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Pellentesque auctor suscipit feugiat. Ut at pellentesque
+                        ante, sed convallis arcu. Nullam facilisis, eros in
+                        eleifend luctus, odio ante sodales augue, eget lacinia
+                        lectus erat et sem.
+                    </p>
+                    <p>Sed semper orci sit amet porta placerat. Etiam quis
+                        finibus eros. Sed aliquam metus lorem, a pellentesque
+                        tellus pretium a. Nulla placerat elit in justo
+                        vestibulum, et maximus sem pulvinar.</p>
+                    <a
+                        class='btn btn-lg btn-circle btn-outline-new-white'
+                        href='#'
+                    >Reservation</a>
+                </div>
+            </div>
+            <div class='col-lg-6 col-md-6 col-sm-12'>
+                <img
+                    src='https://res.cloudinary.com/dqx1h3eve/image/upload/v1687094249/hot-pot-caroline-li-4_nyohi4.jpg'
+                    alt=''
+                    class='img-fluid'
+                />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End About -->
+
+<!-- Start QT -->
+<div class='qt-box qt-background'>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-md-8 ml-auto mr-auto' style='padding-left: 200px;'>
+                <p class='lead'>
+                    " If you're not the one cooking, stay out of the way and
+                    compliment the chef. "
+                </p>
+                <span class='lead'>Michael Strahan</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End QT -->
+
+<!-- Start Gallery -->
+<div class='gallery-box'>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-lg-12'>
+                <div class='heading-title text-center'>
+                    <h2>Những món mới</h2>
+                    <p>Tiệm lẩu Bwi's hotpot luôn luôn cố gắng sáng tạo những
+                        món mới đem lại trải nghiệm tốt cho khách hàng</p>
+                </div>
+            </div>
+        </div>
+        <div class='tz-gallery'>
+            <div class='row'>
+                {{#each hotpot}}
+                    <div class='col-sm-12 col-md-4 col-lg-4'>
+                        <a class='lightbox' href='images/gallery-img-01.jpg'>
+                            <img
+                                class='img-fluid'
+                                src='{{this.image}}'
+                                alt='{{this.name}}'
+                            />
+                        </a>
+                    </div>
+                {{/each}}
+            </div>
+            <div class='row'>
+                {{#each topping}}
+                    <div class='col-sm-12 col-md-4 col-lg-4'>
+                        <a class='lightbox' href='images/gallery-img-01.jpg'>
+                            <img
+                                class='img-fluid'
+                                src='{{this.image}}'
+                                alt='{{this.name}}'
+                            />
+                        </a>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Gallery -->
+
+<!-- Start Contact info -->
+<div class='contact-imfo-box'>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-md-4 arrow-right'>
+                <i class='fa fa-volume-control-phone'></i>
+                <div class='overflow-hidden'>
+                    <h4>Phone</h4>
+                    <p class='lead'>
+                        +01 123-456-4590
+                    </p>
+                </div>
+            </div>
+            <div class='col-md-4 arrow-right'>
+                <i class='fa fa-envelope'></i>
+                <div class='overflow-hidden'>
+                    <h4>Email</h4>
+                    <p class='lead'>
+                        yourmail@gmail.com
+                    </p>
+                </div>
+            </div>
+            <div class='col-md-4'>
+                <i class='fa fa-map-marker'></i>
+                <div class='overflow-hidden'>
+                    <h4>Location</h4>
+                    <p class='lead'>
+                        800, Lorem Street, US
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Contact info -->

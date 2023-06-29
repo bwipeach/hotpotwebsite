@@ -1,0 +1,354 @@
+{{! -----------------Form hotpot-----------------------------------}}
+<div class='all-page-title page-breadcrumb'>
+    <div class='container text-center'>
+        <div class='row'>
+            <div class='col-lg-12'>
+                <h1>Nhúng là mê, ăn là ghiền</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<form
+    class='mt-4'
+    name='container-form'
+    method='POST'
+    action='/hotpots/handle-form-actions'
+>
+    <div>
+        <h3>My hotpots</h3>
+        <a href='/warehouse/trash/hotpots'>Trash ({{deleteHp}})</a>
+    </div>
+
+    <div class='mt-4 d-flex align-items-center'>
+        <div class='form-check'>
+            <input class='form-check-input' type='checkbox' id='checkbox-all' />
+            <label class='form-check-label' for='checkbox-all'>
+                Select all
+            </label>
+        </div>
+
+        <select
+            class='form-control form-control-sm checkbox-select-all-options'
+            name='action'
+            required
+        >
+            <option value=''>-- Pick option --</option>
+            <option value='delete'>Delete</option>
+        </select>
+        <button
+            class='btn btn-primary btn-sm check-all-submit-btn mt-1 disabled'
+        >Perform</button>
+    </div>
+
+    <table class='table mt-2'>
+        <thead>
+            <tr>
+                <th scope='col'></th>
+                <th scope='col'>No.</th>
+                <th scope='col'>Name</th>
+                <th scope='col'>Price</th>
+                <th scope='col' colspan='2'>Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each hotpot}}
+                <tr>
+                    <td>
+                        <div class='form-check'>
+                            <input
+                                class='form-check-input'
+                                type='checkbox'
+                                name='hotpotIds[]'
+                                value='{{this._id}}'
+                            />
+                        </div>
+                    </td>
+                    <th scope='row'>{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>
+                        <a
+                            href='/hotpots/{{this._id}}/edit'
+                            class='btn btn-link'
+                        >Update</a>
+                        <a
+                            href=''
+                            class='btn btn-link'
+                            data-toggle='modal'
+                            data-id='{{this._id}}'
+                            data-target='#deleteHotpotModal'
+                        >Delete</a>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td colspan='5' class='text-center'>
+                        Nothing here :(
+                        <a href='/hotpots/create'>Add hotpot</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+{{!-- <div class='all-page-title page-breadcrumb'>
+    <div class='container text-center'>
+        <div class='row'>
+            <div class='col-lg-12'>
+                <h1>Lưu trữ</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<form method='POST' action='/hotpots/handle-form-actions'>
+    <div>
+        <h3>My hotpots</h3>
+        <a href='/warehouse/trash/hotpots'>Trash ({{deleteHp}})</a>
+    </div>
+    <div class='mb-3'>
+        <div class='form-check'>
+            <input
+                class='form-check-input'
+                type='checkbox'
+                value=''
+                id='flexCheckIndeterminateDisabled'
+                disabled
+            />
+            <label
+                class='form-check-label'
+                for='flexCheckIndeterminateDisabled'
+            >
+                Disabled indeterminate checkbox
+            </label>
+        </div>
+        <select class='form-select' aria-label='Default select example'>
+            <option value=''>-- Pick option --</option>
+            <option value='delete'>Delete</option>
+        </select>
+    </div>
+    <div class='mb-3 form-check'>
+        <label class='form-label' for='price'>Price</label>
+        <input type='text' class='form-control' id='price' name='price' />
+    </div>
+    <div class='mb-3 form-check'>
+        <label class='form-label' for='image'>Image</label>
+        <input type='text' class='form-control' id='image' name='image' />
+    </div>
+    <button type='submit' class='btn btn-primary'>Add</button>
+</form> --}}
+
+{{!---------------Form topping-----------------------------------}}
+<form
+    class='mt-4'
+    name='container-form'
+    method='POST'
+    action='/toppings/handle-form-actions'
+>
+    <div>
+        <h3>My toppings</h3>
+        {{!-- <a href="/warehouse/trash/toppings">Trash ({{deleteToppingCount}})</a> --}}
+    </div>
+
+    <div class='mt-4 d-flex align-items-center'>
+        <div class='form-check'>
+            <input class='form-check-input' type='checkbox' id='checkbox-all' />
+            <label class='form-check-label' for='checkbox-all'>
+                Select all
+            </label>
+        </div>
+
+        <select
+            class='form-control form-control-sm checkbox-select-all-options'
+            name='action'
+            required
+        >
+            <option value=''>-- Pick option --</option>
+            <option value='delete'>Delete</option>
+        </select>
+        <button
+            class='btn btn-primary btn-sm check-all-submit-btn mt-1 disabled'
+        >Perform</button>
+    </div>
+
+    <table class='table mt-2'>
+        <thead>
+            <tr>
+                <th scope='col'></th>
+                <th scope='col'>No.</th>
+                <th scope='col'>Name</th>
+                <th scope='col'>Price</th>
+                <th scope='col' colspan='2'>Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each topping}}
+                <tr>
+                    <td>
+                        <div class='form-check'>
+                            <input
+                                class='form-check-input'
+                                type='checkbox'
+                                name='toppingIds[]'
+                                value='{{this._id}}'
+                            />
+                        </div>
+                    </td>
+                    <th scope='row'>{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>
+                        <a
+                            href='/toppings/{{this._id}}/edit'
+                            class='btn btn-link'
+                        >Update</a>
+                        <a
+                            href=''
+                            class='btn btn-link'
+                            data-toggle='modal'
+                            data-id='{{this._id}}'
+                            data-target='#deleteToppingModal'
+                        >Delete</a>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td colspan='5' class='text-center'>
+                        Nothing here :(
+                        <a href='/toppings/create'>Add topping</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+
+{{!--------------------------------------------------}}
+
+{{! confirm delete }}
+<div id='deleteHotpotModal' class='modal' tabindex='-1' role='dialog'>
+    <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title'>Wait !</h5>
+                <button
+                    type='button'
+                    class='close'
+                    data-dismiss='modal'
+                    aria-label='Close'
+                >
+                    <span aria-hidden='true'>&times;</span>
+                </button>
+            </div>
+            <div class='modal-body'>
+                <p>Are you sure you want to delete this hotpot ?</p>
+            </div>
+            <div class='modal-footer'>
+                <button
+                    id='btn-delete-hotpot'
+                    type='button'
+                    class='btn btn-danger'
+                >Confirm</button>
+                <button
+                    type='button'
+                    class='btn btn-secondary'
+                    data-dismiss='modal'
+                >Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{! Delete hidden form }}
+<form name='delete-hotpot-form' method='POST'></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () =>{ let containerForm =
+    document.forms['container-form'] let hotpotId let deleteForm =
+    document.forms['delete-hotpot-form'] let btnDeleteHotpot =
+    document.getElementById('btn-delete-hotpot') let checkboxAll =
+    $('#checkbox-all') let hotpotIteamCheckbox = $('input[name="hotpotIds[]"]')
+    let checkAllSubmitBtn = $('.check-all-submit-btn') //when confirm clicked
+    $('#deleteHotpotModal').on('show.bs.modal', function (event) { var button =
+    $(event.relatedTarget) hotpotId = button.data('id') }) //when delete student
+    clicked btnDeleteHotpot.onclick = () => { deleteForm.action = '/hotpots/' +
+    hotpotId + '?_method=DELETE' deleteForm.submit() } //checkbox all change
+    checkboxAll.change(function() { let isCheckedAll = $(this).prop('checked')
+    hotpotIteamCheckbox.prop('checked', isCheckedAll) renderCheckallSubmitBtn()
+    }) //student item change hotpotIteamCheckbox.change(function(){ let
+    isCheckedAll = hotpotIteamCheckbox.length ===
+    $('input[name="hotpotIds[]"]:checked').length checkboxAll.prop('checked',
+    isCheckedAll) renderCheckallSubmitBtn() }) //check all perform button
+    clicked checkAllSubmitBtn.on('submit', function(e){ let isSubmitable =
+    $(this).hasClass('disabled') if(isSubmitable){ e.preventDefault() } })
+    //re-render check all perform button renderCheckallSubmitBtn = () => { let
+    checkedCount = $('input[name="hotpotIds[]"]:checked').length
+    if(checkedCount){ checkAllSubmitBtn.removeClass('disabled') }else
+    checkAllSubmitBtn.addClass('disabled') } })
+</script>
+
+{{!-------------------------------------------------}}
+{{! confirm delete }}
+<div id='deleteToppingModal' class='modal' tabindex='-1' role='dialog'>
+    <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title'>Wait !</h5>
+                <button
+                    type='button'
+                    class='close'
+                    data-dismiss='modal'
+                    aria-label='Close'
+                >
+                    <span aria-hidden='true'>&times;</span>
+                </button>
+            </div>
+            <div class='modal-body'>
+                <p>Are you sure you want to delete this topping ?</p>
+            </div>
+            <div class='modal-footer'>
+                <button
+                    id='btn-delete-topping'
+                    type='button'
+                    class='btn btn-danger'
+                >Confirm</button>
+                <button
+                    type='button'
+                    class='btn btn-secondary'
+                    data-dismiss='modal'
+                >Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{! Delete hidden form }}
+<form name='delete-topping-form' method='POST'></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () =>{ let containerForm =
+    document.forms['container-form'] let toppingId let deleteForm =
+    document.forms['delete-topping-form'] let btnDeleteTopping =
+    document.getElementById('btn-delete-topping') let checkboxAll =
+    $('#checkbox-all') let toppingIteamCheckbox =
+    $('input[name="toppingIds[]"]') let checkAllSubmitBtn =
+    $('.check-all-submit-btn') //when confirm clicked
+    $('#deleteToppingModal').on('show.bs.modal', function (event) { var button =
+    $(event.relatedTarget) toppingId = button.data('id') }) //when delete
+    topping clicked btnDeleteTopping.onclick = () => { deleteForm.action =
+    '/toppings/' + toppingId + '?_method=DELETE' deleteForm.submit() }
+    //checkbox all change checkboxAll.change(function() { let isCheckedAll =
+    $(this).prop('checked') toppingIteamCheckbox.prop('checked', isCheckedAll)
+    renderCheckallSubmitBtn() }) //topping item change
+    toppingIteamCheckbox.change(function(){ let isCheckedAll =
+    toppingIteamCheckbox.length ===
+    $('input[name="toppingIds[]"]:checked').length checkboxAll.prop('checked',
+    isCheckedAll) renderCheckallSubmitBtn() }) //check all perform button
+    clicked checkAllSubmitBtn.on('submit', function(e){ let isSubmitable =
+    $(this).hasClass('disabled') if(isSubmitable){ e.preventDefault() } })
+    //re-render check all perform button renderCheckallSubmitBtn = () => { let
+    checkedCount = $('input[name="toppingIds[]"]:checked').length
+    if(checkedCount){ checkAllSubmitBtn.removeClass('disabled') }else
+    checkAllSubmitBtn.addClass('disabled') } })
+</script>

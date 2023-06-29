@@ -1,0 +1,22 @@
+<div class="mt-4">
+  <h3>Update topping</h3>
+  <form class="mt-4" method="post" action="/toppings/{{topping._id}}?_method=put">
+      <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name = "name" value="{{topping.name}}">
+      </div>
+      <div class="form-group">
+          <label for="description">Description</label>
+          <input type="text" class="form-control" id="description" name = "description" value="{{topping.description}}">
+      </div>
+      <div class="form-group">
+          <label for="price">price</label>
+          <input type="text" class="form-control" id="price" name = "price" value="{{topping.price}}">
+      </div>
+      <div class="form-group">
+          <label for="image">Image</label>
+          <textarea name="image" id="image">{{topping.image}}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
