@@ -1,32 +1,48 @@
 const Topping = require('../models/Topping');
+const User = require('../models/User');
 const { mongooseToObject } = require('../../util/mongoose');
+const { Promise } = require('mongoose');
 class toppingController {
     //[GET] /toppings/:slug
     show(req, res, next) {
-        Topping.findOne({ slug: req.params.slug })
-            .then((topping) => {
+        Promise.all([
+            Topping.findOne({ slug: req.params.slug }),
+            User.findById(req.user._id)
+        ])
+            .then(([topping, user]) => {
                 res.render('topping/show', {
-                    topping: mongooseToObject(topping)
+                    topping: mongooseToObject(topping),
+                    user: mongooseToObject(user)
                 });
             })
             .catch(next);
     }
     //[GET] /toppings/create
     create(req, res, next) {
-        res.render('topping/create');
+        User.findById(req.user._id)
+        .then((user) => {
+            res.render('topping/create',{
+                user: mongooseToObject(user)
+            });
+        })
+        .catch(next);   
     }
     //[POST] /toppings/store
     store(req, res, next) {
         const topping = new Topping(req.body);
-        topping.save().then(() => res.send('toppinghihi'));
+        topping.save().then(() => res.redirect('/warehouse/stored/hotpotss'));
     }
 
     //[GET] /toppings/:id/edit
     edit(req, res, next) {
-        Topping.findById(req.params.id)
-            .then((topping) => {
+        Promise.all([
+            Topping.findById(req.params.id),
+            User.findById(req.user._id)
+        ])
+            .then(([topping, user]) => {
                 res.render('topping/edit', {
-                    topping: mongooseToObject(topping)
+                    topping: mongooseToObject(topping),
+                    user: mongooseToObject(user)
                 });
             })
             .catch(next);
@@ -34,7 +50,7 @@ class toppingController {
     //[PUT] /toppings/:id
     update(req, res, next) {
         Topping.updateOne({ _id: req.params.id }, req.body)
-            .then(() => res.send('hotpothihi'))
+            .then(() => res.redirect('/warehouse/stored/hotpots'))
             .catch(next);
     }
 

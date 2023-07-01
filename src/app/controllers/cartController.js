@@ -5,29 +5,25 @@ const {
 } = require('../../util/mongoose');
 const Topping = require('../models/Topping');
 const Hotpot = require('../models/Hotpot');
-
+const User = require('../models/User');
 class cartController {
-    //[GET] cart/booking
-    booking(req, res, next) {
-        res.render('cart/booking');
-    }
     //[GET] cart/product
     product(req, res, next) {
-        res.render('cart/product');
-    }
-    //[GET] /cart/show
-    show(req, res, next) {
-        Cart.find({})
-            .then((cart) => {
-                res.render('cart/show', {
-                    cart: mutipleMongooseToObject(cart)
+        Promise.all([
+            Cart.findOne({ _id: req.user._id }),
+            User.findById(req.user._id)
+        ])
+            .then(([carts, user]) => {
+                res.render('cart/product', {
+                    carts: carts.toObject(),
+                    user: mongooseToObject(user),
+                    cart: carts.items.length
                 });
             })
             .catch(next);
     }
     //[POST] /cart/hotpot/:id
     async addCartHotpot(req, res, next) {
-        let total = 0;
         await Promise.all([
             Cart.findOne({ _id: req.user._id }),
             Hotpot.findOne({ slug: req.params.slug })
@@ -35,59 +31,167 @@ class cartController {
             .then(([cart, hotpot]) => {
                 const newItem = {
                     id: hotpot._id,
+                    image: hotpot.image,
                     name: hotpot.name,
                     price: hotpot.price,
                     quantity: req.body.quantity
                 };
                 if (cart) {
-                    cart.items.push(newItem);
+                    const existingItem = cart.items.some(
+                        (item) => item.id === newItem.id.toString()
+                    );
+                    if (existingItem) {
+                        cart.items.forEach((item) => {
+                            if (item.id === newItem.id.toString()) {
+                                item.quantity += parseInt(newItem.quantity, 10);
+                            }
+                        });
+                    } else {
+                        cart.items.push(newItem);
+                    }
                     cart.total += newItem.price * newItem.quantity;
                     cart.save().then(() => {
-                        res.send('thành công');
+                        res.redirect('/cart/product');
                     });
                 } else {
                     const newCart = new Cart({
                         _id: req.user._id,
-                        items: new Array(),
+                        items: [newItem],
                         total: newItem.price * newItem.quantity
                     });
-                    newCart.items.push(newItem);
                     newCart.save().then(() => {
-                        res.send('thành công');
+                        res.redirect('/cart/product');
                     });
                 }
             })
             .catch(next);
     }
 
-    addCartTopping(req, res, next) {
-        Promise.all([
-            Cart.findOne({ _id: req.users.id }),
-            Topping.findOne({ _id: req.param.id })
+    async addCartTopping(req, res, next) {
+        await Promise.all([
+            Cart.findOne({ _id: req.user._id }),
+            Topping.findOne({ slug: req.params.slug })
         ])
             .then(([cart, topping]) => {
                 const newItem = {
                     id: topping._id,
+                    image: topping.image,
                     name: topping.name,
                     price: topping.price,
                     quantity: req.body.quantity
                 };
                 if (cart) {
-                    cart.items.push(newItem);
-                    total += newItem.price * newItem.quantity;
+                    const existingItem = cart.items.some(
+                        (item) => item.id === newItem.id.toString()
+                    );
+                    if (existingItem) {
+                        cart.items.forEach((item) => {
+                            if (item.id === newItem.id.toString()) {
+                                item.quantity += parseInt(newItem.quantity, 10);
+                            }
+                        });
+                    } else {
+                        cart.items.push(newItem);
+                    }
+                    cart.total += newItem.price * newItem.quantity;
+                    cart.save().then(() => {
+                        res.redirect('/cart/product');
+                    });
                 } else {
-                    const newCart = {
-                        _id: req.users.id,
-                        items: new Array(),
+                    const newCart = new Cart({
+                        _id: req.user._id,
+                        items: [newItem],
                         total: newItem.price * newItem.quantity
-                    };
-                    newCart.items.push(newItem);
-                    cart = newCart;
+                    });
+                    newCart.save().then(() => {
+                        res.redirect('/cart/product');
+                    });
                 }
-                cart.save();
-                res.send('thành công');
             })
             .catch(next);
+    }
+
+    //[PUT]
+    async updateCartHotpot(req, res, next) {
+        try {
+          const [cart, hotpot] = await Promise.all([
+            Cart.findOne({ _id: req.user._id }),
+            Hotpot.findOne({ slug: req.params.slug })
+          ]);
+      
+          const newItem = {
+            id: hotpot._id,
+            image: hotpot.image,
+            name: hotpot.name,
+            price: hotpot.price,
+            quantity: req.body.quantity
+          };
+      
+          if (cart) {
+            const existingItem = cart.items.find(item => item.id === newItem.id.toString());
+      
+            if (existingItem) {
+              existingItem.quantity = parseInt(newItem.quantity, 10);
+            } else {
+              cart.items.push(newItem);
+            }
+      
+            cart.total = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+      
+            await cart.save();
+          } else {
+            const newCart = new Cart({
+              _id: req.user._id,
+              items: [newItem],
+              total: newItem.price * newItem.quantity
+            });
+      
+            await newCart.save();
+          }
+      
+          res.redirect('/cart/product');
+        } catch (error) {
+          next(error);
+        }
+      }
+
+
+
+
+    //[DELETE] cart/:id
+    async delete(req, res, next) {
+        try {
+            const cartId = req.user._id;
+            const itemId = req.params.id;
+            const cart = await Cart.findOne({ _id: cartId });
+
+            if (!cart) {
+                return res
+                    .status(404)
+                    .json({ message: 'Giỏ hàng không tồn tại' });
+            }
+
+            const itemIndex = cart.items.findIndex(
+                (item) => item.id.toString() === itemId.toString()
+            );
+
+            if (itemIndex === -1) {
+                return res
+                    .status(404)
+                    .json({ message: 'Sản phẩm không tồn tại trong giỏ hàng' });
+            }
+
+            const deletedItem = cart.items.splice(itemIndex, 1);
+            cart.total -=
+                parseInt(deletedItem[0].price, 10) *
+                parseInt(deletedItem[0].quantity, 10);
+
+            await cart.save();
+
+            res.redirect('/cart/product');
+        } catch (error) {
+            next(error);
+        }
     }
 }
 module.exports = new cartController();

@@ -2,124 +2,54 @@
 	<div class="container text-center">
 		<div class="row">
 			<div class="col-lg-12">
-				<h1>Giỏ hàng</h1>
+				<h1>Đặt hàng</h1>
 			</div>
 		</div>
 	</div>
 </div>
 
+<form method='post' action='/order/placeOrder'>
 <section class="ftco-section">
     	<div class="container">
     		<div class="row justify-content-center">
                 <div class="col-xl-10 ftco-animate btn-book">
 					<form action="#" class="billing-form">
-					<h3 class="mb-4 billing-heading">Billing Details</h3>
-	          	<div class="row align-items-end">
-	          		<div class="col-md-6">
-                        <div class="form-group">
-                            <label for="firstname">Firt Name</label>
-                        <input type="text" class="form-control" placeholder="">
-                        </div>
-	                </div>
-	                <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="lastname">Last Name</label>
-                            <input type="text" class="form-control" placeholder="">
-                        </div>
-                    </div>
-                    <div class="w-100"></div>
-		            <div class="col-md-12">
-		            	<div class="form-group">
-		            		<label for="country">State / Country</label>
-		            		<div class="select-wrap">
-		                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-		                  <select name="" id="" class="form-control">
-		                  	<option value="">France</option>
-		                    <option value="">Italy</option>
-		                    <option value="">Philippines</option>
-		                    <option value="">South Korea</option>
-		                    <option value="">Hongkong</option>
-		                    <option value="">Japan</option>
-		                  </select>
-		                </div>
-		            </div>
-		        </div>
+					<h3 class="mb-4 billing-heading">Điền thông tin giao hàng</h3>
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
-                            <label for="streetaddress">Street Address</label>
-                            <input type="text" class="form-control" placeholder="House number and street name">
+	                	    <label for="towncity">Tên</label>
+	                        <input type="text" class="form-control" placeholder="" required>
 	                    </div>
-		            </div>
-		            <div class="col-md-6">
-		            	<div class="form-group">
-	                        <input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
-	                    </div>
-		            </div>
-		            <div class="w-100"></div>
-		            <div class="col-md-6">
-		            	<div class="form-group">
-	                	    <label for="towncity">Town / City</label>
-	                        <input type="text" class="form-control" placeholder="">
-	                    </div>
-		            </div>
-		            <div class="col-md-6">
-		            	<div class="form-group">
-		            		<label for="postcodezip">Postcode / ZIP *</label>
-	                  <input type="text" class="form-control" placeholder="">
-	                </div>
 		            </div>
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="phone">Phone</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="phone">Số điện thoại</label>
+	                  <input type="text" class="form-control" placeholder="" required>
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="emailaddress">Email Address</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="emailaddress">Địa chỉ</label>
+	                  <input type="text" class="form-control" placeholder="" required>
 	                </div>
                 </div>
-                <div class="w-100"></div>
-                <div class="col-md-12">
-                	<div class="form-group mt-4">
-										<div class="radio">
-										  <label class="mr-3"><input type="radio" name="optradio"> Create an Account? </label>
-										  <label><input type="radio" name="optradio"> Ship to different address</label>
-										</div>
-									</div>
-                </div>
-	            </div>
 	          </form>
 
                 <div class="row justify-content-end">
             <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
                 <div class="cart-total mb-3">
-                    <h3>Cart Totals</h3>
-                    <p class="d-flex" style="color: gray;">
-                        <span>Subtotal</span>
-                        <span>$20.60</span>
-                    </p>
-                    <p class="d-flex" style="color: gray;">
-                        <span>Delivery</span>
-                        <span>$0.00</span>
-                    </p>
-                    <p class="d-flex" style="color: gray;">
-                        <span>Discount</span>
-                        <span>$3.00</span>
-                    </p>
-                    <hr>
                     <p class="d-flex total-price">
-                        <span style="color: gray;">TOTAL</span>
-                        <span>$17.60</span>
+                        <span style="color: gray;">Tổng tiền</span>
+                        <span>{{carts.total}} VNĐ</span>
                     </p>
                 </div>
-                <p class="text-center"><a href="/cart/booking" class="btn btn-primary py-3 px-4">Đặt hàng</a></p>
+                <button type="submit" "text-center btn btn-primary py-3 px-4" style="width: 100%; border: 1px solid white;">Đặt hàng</button>
             </div>
     	</div>
             </div>
         </div>
     </div>
 </section>
+</form>

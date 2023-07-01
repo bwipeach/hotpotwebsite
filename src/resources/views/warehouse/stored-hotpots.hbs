@@ -1,4 +1,3 @@
-{{! -----------------Form hotpot-----------------------------------}}
 <div class='all-page-title page-breadcrumb'>
     <div class='container text-center'>
         <div class='row'>
@@ -8,347 +7,291 @@
         </div>
     </div>
 </div>
-<form
-    class='mt-4'
-    name='container-form'
-    method='POST'
-    action='/hotpots/handle-form-actions'
->
-    <div>
-        <h3>My hotpots</h3>
-        <a href='/warehouse/trash/hotpots'>Trash ({{deleteHp}})</a>
+{{! -----------------Form hotpot-------------}}
+<form class="mt-4" name="container-form" method="POST" action="/hotpots/handle-form-actions">
+  <div>
+    <h3>Lẩu</h3>
+    <a href="/warehouse/trash/hotpots">Thùng rác ({{deleteHp}})</a>
+  </div>
+
+  <div class="mt-4 d-flex align-items-center">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="checkbox-all" />
+      <label class="form-check-label" for="checkbox-all">
+        Chọn tất cả
+      </label>
     </div>
 
-    <div class='mt-4 d-flex align-items-center'>
-        <div class='form-check'>
-            <input class='form-check-input' type='checkbox' id='checkbox-all' />
-            <label class='form-check-label' for='checkbox-all'>
-                Select all
-            </label>
-        </div>
+    <select class="form-select form-select-sm checkbox-select-all-options" name="action" required>
+      <option value="">-- Lựa chọn --</option>
+      <option value="delete">Xóa</option>
+    </select>
+    <button class="btn btn-primary btn-sm check-all-submit-btn mt-1 disabled">Xác nhận</button>
+  </div>
 
-        <select
-            class='form-control form-control-sm checkbox-select-all-options'
-            name='action'
-            required
-        >
-            <option value=''>-- Pick option --</option>
-            <option value='delete'>Delete</option>
-        </select>
-        <button
-            class='btn btn-primary btn-sm check-all-submit-btn mt-1 disabled'
-        >Perform</button>
-    </div>
-
-    <table class='table mt-2'>
-        <thead>
-            <tr>
-                <th scope='col'></th>
-                <th scope='col'>No.</th>
-                <th scope='col'>Name</th>
-                <th scope='col'>Price</th>
-                <th scope='col' colspan='2'>Created at</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each hotpot}}
-                <tr>
-                    <td>
-                        <div class='form-check'>
-                            <input
-                                class='form-check-input'
-                                type='checkbox'
-                                name='hotpotIds[]'
-                                value='{{this._id}}'
-                            />
-                        </div>
-                    </td>
-                    <th scope='row'>{{sum @index 1}}</th>
-                    <td>{{this.name}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.createdAt}}</td>
-                    <td>
-                        <a
-                            href='/hotpots/{{this._id}}/edit'
-                            class='btn btn-link'
-                        >Update</a>
-                        <a
-                            href=''
-                            class='btn btn-link'
-                            data-toggle='modal'
-                            data-id='{{this._id}}'
-                            data-target='#deleteHotpotModal'
-                        >Delete</a>
-                    </td>
-                </tr>
-            {{else}}
-                <tr>
-                    <td colspan='5' class='text-center'>
-                        Nothing here :(
-                        <a href='/hotpots/create'>Add hotpot</a>
-                    </td>
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
+  <table class="table mt-2">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">No.</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Giá</th>
+        <th scope="col" colspan="2">Ngày tạo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each hotpot}}
+      <tr>
+        <td>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="hotpotIds[]" value="{{this._id}}" />
+          </div>
+        </td>
+        <th scope="row">{{sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.price}}</td>
+        <td>{{this.createdAt}}</td>
+        <td>
+          <a href="/hotpots/{{this._id}}/edit" class="btn btn-link">Cập nhật</a>
+          <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#deleteHotpotModal" data-id="{{this._id}}">Xóa</a>
+        </td>
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="5" class="text-center">
+          Hiện không có :(
+          <a href="/hotpots/create">Thêm lẩu</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </form>
-{{!-- <div class='all-page-title page-breadcrumb'>
-    <div class='container text-center'>
-        <div class='row'>
-            <div class='col-lg-12'>
-                <h1>Lưu trữ</h1>
-            </div>
-        </div>
+
+{{! confirm delete hotpot }}
+<div id="deleteHotpotModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Chờ chút!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc là muốn xóa lẩu này?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-hotpot" type="button" class="btn btn-danger">Xác nhận</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+      </div>
     </div>
+  </div>
 </div>
-<form method='POST' action='/hotpots/handle-form-actions'>
+
+{{! Delete hidden form hotpot}}
+<form name="delete-hotpot-form" method="POST"></form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let containerForm = document.forms['container-form'];
+    let hotpotId;
+    let deleteForm = document.forms['delete-hotpot-form'];
+    let btnDeleteHotpot = document.getElementById('btn-delete-hotpot');
+    let checkboxAll = document.getElementById('checkbox-all');
+    let hotpotItemCheckbox = document.querySelectorAll('input[name="hotpotIds[]"]');
+    let checkAllSubmitBtn = document.querySelector('.check-all-submit-btn');
+
+    // when confirm clicked
+    document.getElementById('deleteHotpotModal').addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      hotpotId = button.getAttribute('data-id');
+    });
+
+    // when delete hotpot clicked
+    btnDeleteHotpot.onclick = () => {
+      deleteForm.action = '/hotpots/' + hotpotId + '?_method=DELETE';
+      deleteForm.submit();
+    };
+
+    // checkbox all change
+    checkboxAll.addEventListener('change', function () {
+      let isCheckedAll = this.checked;
+      hotpotItemCheckbox.forEach((checkbox) => {
+        checkbox.checked = isCheckedAll;
+      });
+      renderCheckAllSubmitBtn();
+    });
+
+    // hotpot item change
+    hotpotItemCheckbox.forEach((checkbox) => {
+      checkbox.addEventListener('change', function () {
+        let isCheckedAll = hotpotItemCheckbox.length === document.querySelectorAll('input[name="hotpotIds[]"]:checked').length;
+        checkboxAll.checked = isCheckedAll;
+        renderCheckAllSubmitBtn();
+      });
+    });
+
+    // check all perform button clicked
+    checkAllSubmitBtn.addEventListener('click', function (e) {
+      if (checkAllSubmitBtn.classList.contains('disabled')) {
+        e.preventDefault();
+      }
+    });
+
+    // re-render check all perform button
+    function renderCheckAllSubmitBtn() {
+      let checkedCount = document.querySelectorAll('input[name="hotpotIds[]"]:checked').length;
+      if (checkedCount) {
+        checkAllSubmitBtn.classList.remove('disabled');
+      } else {
+        checkAllSubmitBtn.classList.add('disabled');
+      }
+    }
+  });
+</script>
+
+
+
+
+<form class="mt-4" name="container-form" method="POST" action="/toppings/handle-form-actions">
     <div>
-        <h3>My hotpots</h3>
-        <a href='/warehouse/trash/hotpots'>Trash ({{deleteHp}})</a>
+        <h3>Topping</h3>
+        <!-- <a href="/warehouse/trash/toppings">Trash ({{deleteToppingCount}})</a> -->
     </div>
-    <div class='mb-3'>
-        <div class='form-check'>
-            <input
-                class='form-check-input'
-                type='checkbox'
-                value=''
-                id='flexCheckIndeterminateDisabled'
-                disabled
-            />
-            <label
-                class='form-check-label'
-                for='flexCheckIndeterminateDisabled'
-            >
-                Disabled indeterminate checkbox
+
+    <div class="mt-4 d-flex align-items-center">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkbox-all" />
+            <label class="form-check-label" for="checkbox-all">
+                Chọn tất cả
             </label>
         </div>
-        <select class='form-select' aria-label='Default select example'>
-            <option value=''>-- Pick option --</option>
-            <option value='delete'>Delete</option>
+
+        <select class="form-control form-control-sm checkbox-select-all-options" name="action" required>
+            <option value="">-- Lựa chọn --</option>
+            <option value="delete">Xóa</option>
         </select>
-    </div>
-    <div class='mb-3 form-check'>
-        <label class='form-label' for='price'>Price</label>
-        <input type='text' class='form-control' id='price' name='price' />
-    </div>
-    <div class='mb-3 form-check'>
-        <label class='form-label' for='image'>Image</label>
-        <input type='text' class='form-control' id='image' name='image' />
-    </div>
-    <button type='submit' class='btn btn-primary'>Add</button>
-</form> --}}
-
-{{!---------------Form topping-----------------------------------}}
-<form
-    class='mt-4'
-    name='container-form'
-    method='POST'
-    action='/toppings/handle-form-actions'
->
-    <div>
-        <h3>My toppings</h3>
-        {{!-- <a href="/warehouse/trash/toppings">Trash ({{deleteToppingCount}})</a> --}}
+        <button class="btn btn-primary btn-sm check-all-submit-btn mt-1 disabled">Xác nhận</button>
     </div>
 
-    <div class='mt-4 d-flex align-items-center'>
-        <div class='form-check'>
-            <input class='form-check-input' type='checkbox' id='checkbox-all' />
-            <label class='form-check-label' for='checkbox-all'>
-                Select all
-            </label>
-        </div>
-
-        <select
-            class='form-control form-control-sm checkbox-select-all-options'
-            name='action'
-            required
-        >
-            <option value=''>-- Pick option --</option>
-            <option value='delete'>Delete</option>
-        </select>
-        <button
-            class='btn btn-primary btn-sm check-all-submit-btn mt-1 disabled'
-        >Perform</button>
-    </div>
-
-    <table class='table mt-2'>
+    <table class="table mt-2">
         <thead>
             <tr>
-                <th scope='col'></th>
-                <th scope='col'>No.</th>
-                <th scope='col'>Name</th>
-                <th scope='col'>Price</th>
-                <th scope='col' colspan='2'>Created at</th>
+                <th scope="col"></th>
+                <th scope="col">No.</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Giá</th>
+                <th scope="col" colspan="2">Ngày tạo</th>
             </tr>
         </thead>
         <tbody>
             {{#each topping}}
-                <tr>
-                    <td>
-                        <div class='form-check'>
-                            <input
-                                class='form-check-input'
-                                type='checkbox'
-                                name='toppingIds[]'
-                                value='{{this._id}}'
-                            />
-                        </div>
-                    </td>
-                    <th scope='row'>{{sum @index 1}}</th>
-                    <td>{{this.name}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.createdAt}}</td>
-                    <td>
-                        <a
-                            href='/toppings/{{this._id}}/edit'
-                            class='btn btn-link'
-                        >Update</a>
-                        <a
-                            href=''
-                            class='btn btn-link'
-                            data-toggle='modal'
-                            data-id='{{this._id}}'
-                            data-target='#deleteToppingModal'
-                        >Delete</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="toppingIds[]" value="{{this._id}}" />
+                    </div>
+                </td>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <a href="/toppings/{{this._id}}/edit" class="btn btn-link">Cập nhật</a>
+                    <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#deleteToppingModal"
+                        data-id="{{this._id}}">Xóa</a>
+                </td>
+            </tr>
             {{else}}
-                <tr>
-                    <td colspan='5' class='text-center'>
-                        Nothing here :(
-                        <a href='/toppings/create'>Add topping</a>
-                    </td>
-                </tr>
+            <tr>
+                <td colspan="5" class="text-center">
+                    Hiện không có :(
+                    <a href="/toppings/create">Thêm topping</a>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
 </form>
 
-{{!--------------------------------------------------}}
-
-{{! confirm delete }}
-<div id='deleteHotpotModal' class='modal' tabindex='-1' role='dialog'>
-    <div class='modal-dialog' role='document'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h5 class='modal-title'>Wait !</h5>
-                <button
-                    type='button'
-                    class='close'
-                    data-dismiss='modal'
-                    aria-label='Close'
-                >
-                    <span aria-hidden='true'>&times;</span>
-                </button>
+<!-- Confirm delete topping modal -->
+<div class="modal fade" id="deleteToppingModal" tabindex="-1" role="dialog" aria-labelledby="deleteToppingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteToppingModalLabel">Chờ chút!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class='modal-body'>
-                <p>Are you sure you want to delete this hotpot ?</p>
+            <div class="modal-body">
+                <p>Bạn có chắc là muốn xóa topping này?</p>
             </div>
-            <div class='modal-footer'>
-                <button
-                    id='btn-delete-hotpot'
-                    type='button'
-                    class='btn btn-danger'
-                >Confirm</button>
-                <button
-                    type='button'
-                    class='btn btn-secondary'
-                    data-dismiss='modal'
-                >Cancel</button>
+            <div class="modal-footer">
+                <button id="btn-delete-topping" type="button" class="btn btn-danger">Đồng ý</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>
     </div>
 </div>
 
-{{! Delete hidden form }}
-<form name='delete-hotpot-form' method='POST'></form>
+<!-- Delete hidden form -->
+<form name="delete-topping-form" method="POST"></form>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () =>{ let containerForm =
-    document.forms['container-form'] let hotpotId let deleteForm =
-    document.forms['delete-hotpot-form'] let btnDeleteHotpot =
-    document.getElementById('btn-delete-hotpot') let checkboxAll =
-    $('#checkbox-all') let hotpotIteamCheckbox = $('input[name="hotpotIds[]"]')
-    let checkAllSubmitBtn = $('.check-all-submit-btn') //when confirm clicked
-    $('#deleteHotpotModal').on('show.bs.modal', function (event) { var button =
-    $(event.relatedTarget) hotpotId = button.data('id') }) //when delete student
-    clicked btnDeleteHotpot.onclick = () => { deleteForm.action = '/hotpots/' +
-    hotpotId + '?_method=DELETE' deleteForm.submit() } //checkbox all change
-    checkboxAll.change(function() { let isCheckedAll = $(this).prop('checked')
-    hotpotIteamCheckbox.prop('checked', isCheckedAll) renderCheckallSubmitBtn()
-    }) //student item change hotpotIteamCheckbox.change(function(){ let
-    isCheckedAll = hotpotIteamCheckbox.length ===
-    $('input[name="hotpotIds[]"]:checked').length checkboxAll.prop('checked',
-    isCheckedAll) renderCheckallSubmitBtn() }) //check all perform button
-    clicked checkAllSubmitBtn.on('submit', function(e){ let isSubmitable =
-    $(this).hasClass('disabled') if(isSubmitable){ e.preventDefault() } })
-    //re-render check all perform button renderCheckallSubmitBtn = () => { let
-    checkedCount = $('input[name="hotpotIds[]"]:checked').length
-    if(checkedCount){ checkAllSubmitBtn.removeClass('disabled') }else
-    checkAllSubmitBtn.addClass('disabled') } })
+    document.addEventListener('DOMContentLoaded', () => {
+        let containerForm = document.forms['container-form'];
+        let toppingId;
+        let deleteForm = document.forms['delete-topping-form'];
+        let btnDeleteTopping = document.getElementById('btn-delete-topping');
+        let checkboxAll = document.getElementById('checkbox-all');
+        let toppingItemCheckbox = document.querySelectorAll('input[name="toppingIds[]"]');
+        let checkAllSubmitBtn = document.querySelector('.check-all-submit-btn');
+
+        // When confirm button is clicked
+        document.getElementById('deleteToppingModal').addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            toppingId = button.getAttribute('data-id');
+        });
+
+        // When delete topping button is clicked
+        btnDeleteTopping.onclick = () => {
+            deleteForm.action = '/toppings/' + toppingId + '?_method=DELETE';
+            deleteForm.submit();
+        };
+
+        // Checkbox all change
+        checkboxAll.addEventListener('change', function () {
+            let isCheckedAll = this.checked;
+            toppingItemCheckbox.forEach((checkbox) => {
+                checkbox.checked = isCheckedAll;
+            });
+            renderCheckAllSubmitBtn();
+        });
+
+        // Topping item change
+        toppingItemCheckbox.forEach((checkbox) => {
+            checkbox.addEventListener('change', function () {
+                let isCheckedAll = toppingItemCheckbox.length === document.querySelectorAll('input[name="toppingIds[]"]:checked').length;
+                checkboxAll.checked = isCheckedAll;
+                renderCheckAllSubmitBtn();
+            });
+        });
+
+        // Check all perform button clicked
+        checkAllSubmitBtn.addEventListener('click', function (e) {
+            if (checkAllSubmitBtn.classList.contains('disabled')) {
+                e.preventDefault();
+            }
+        });
+
+        // Re-render check all perform button
+        function renderCheckAllSubmitBtn() {
+            let checkedCount = document.querySelectorAll('input[name="toppingIds[]"]:checked').length;
+            if (checkedCount) {
+                checkAllSubmitBtn.classList.remove('disabled');
+            } else {
+                checkAllSubmitBtn.classList.add('disabled');
+            }
+        }
+    });
 </script>
 
-{{!-------------------------------------------------}}
-{{! confirm delete }}
-<div id='deleteToppingModal' class='modal' tabindex='-1' role='dialog'>
-    <div class='modal-dialog' role='document'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h5 class='modal-title'>Wait !</h5>
-                <button
-                    type='button'
-                    class='close'
-                    data-dismiss='modal'
-                    aria-label='Close'
-                >
-                    <span aria-hidden='true'>&times;</span>
-                </button>
-            </div>
-            <div class='modal-body'>
-                <p>Are you sure you want to delete this topping ?</p>
-            </div>
-            <div class='modal-footer'>
-                <button
-                    id='btn-delete-topping'
-                    type='button'
-                    class='btn btn-danger'
-                >Confirm</button>
-                <button
-                    type='button'
-                    class='btn btn-secondary'
-                    data-dismiss='modal'
-                >Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{! Delete hidden form }}
-<form name='delete-topping-form' method='POST'></form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () =>{ let containerForm =
-    document.forms['container-form'] let toppingId let deleteForm =
-    document.forms['delete-topping-form'] let btnDeleteTopping =
-    document.getElementById('btn-delete-topping') let checkboxAll =
-    $('#checkbox-all') let toppingIteamCheckbox =
-    $('input[name="toppingIds[]"]') let checkAllSubmitBtn =
-    $('.check-all-submit-btn') //when confirm clicked
-    $('#deleteToppingModal').on('show.bs.modal', function (event) { var button =
-    $(event.relatedTarget) toppingId = button.data('id') }) //when delete
-    topping clicked btnDeleteTopping.onclick = () => { deleteForm.action =
-    '/toppings/' + toppingId + '?_method=DELETE' deleteForm.submit() }
-    //checkbox all change checkboxAll.change(function() { let isCheckedAll =
-    $(this).prop('checked') toppingIteamCheckbox.prop('checked', isCheckedAll)
-    renderCheckallSubmitBtn() }) //topping item change
-    toppingIteamCheckbox.change(function(){ let isCheckedAll =
-    toppingIteamCheckbox.length ===
-    $('input[name="toppingIds[]"]:checked').length checkboxAll.prop('checked',
-    isCheckedAll) renderCheckallSubmitBtn() }) //check all perform button
-    clicked checkAllSubmitBtn.on('submit', function(e){ let isSubmitable =
-    $(this).hasClass('disabled') if(isSubmitable){ e.preventDefault() } })
-    //re-render check all perform button renderCheckallSubmitBtn = () => { let
-    checkedCount = $('input[name="toppingIds[]"]:checked').length
-    if(checkedCount){ checkAllSubmitBtn.removeClass('disabled') }else
-    checkAllSubmitBtn.addClass('disabled') } })
-</script>

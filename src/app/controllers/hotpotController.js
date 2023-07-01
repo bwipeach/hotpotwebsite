@@ -1,19 +1,31 @@
 const Hotpot = require('../models/Hotpot');
+const User = require('../models/User')
 const { mongooseToObject } = require('../../util/mongoose');
+const { Promise } = require('mongoose');
 class hotpotController {
     //[GET] /hotpots/:slug
     show(req, res, next) {
-        Hotpot.findOne({ slug: req.params.slug })
-            .then((hotpot) => {
+        Promise.all([
+            Hotpot.findOne({ slug: req.params.slug }),
+            User.findById(req.user._id)
+        ])
+            .then(([hotpot, user]) => {
                 res.render('hotpot/show', {
-                    hotpot: mongooseToObject(hotpot)
+                    hotpot: mongooseToObject(hotpot),
+                    user: mongooseToObject(user)
                 });
             })
             .catch(next);
     }
     //[GET] /hotpots/create
     create(req, res, next) {
-        res.render('hotpot/create');
+        User.findById(req.user._id)
+        .then((user) => {
+            res.render('hotpot/create',{
+                user: mongooseToObject(user)
+            });
+        })
+        .catch(next);   
     }
     //[POST] /hotpots/store
     store(req, res, next) {
@@ -23,10 +35,14 @@ class hotpotController {
 
     //[GET] /hotpots/:id/edit
     edit(req, res, next) {
-        Hotpot.findById(req.params.id)
-            .then((hotpot) => {
+        Promise.all([
+            Hotpot.findById(req.params.id),
+            User.findById(req.user._id)
+        ])
+            .then(([hotpot, user]) => {
                 res.render('hotpot/edit', {
-                    hotpot: mongooseToObject(hotpot)
+                    hotpot: mongooseToObject(hotpot),
+                    user: mongooseToObject(user)
                 });
             })
             .catch(next);

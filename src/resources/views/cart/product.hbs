@@ -8,102 +8,110 @@
     </div>
 </div>
 
-<section class='ftco-section'>
-    <div class='container'>
-        <div class='row'>
-            <div class='table-wrap'>
-                <table class='table'>
-                    <thead class='thread-primary'>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="table-wrap">
+                <table class="table">
+                    <thead class="thead-primary">
                         <tr>
-                            <th>&nbsp;</th>
                             <th>&nbsp;</th>
                             <th>Sản phẩm</th>
                             <th>Giá</th>
                             <th>Số lượng</th>
-                            <th>Tổng</th>
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class='alert' role='alert'>
-                            <td>
-                                <label class='checkbox-wrap checkbox-primary'>
-                                    {{! <input type="checkbox" checked> }}
-                                    <input
-                                        type='checkbox'
-                                        style='color: yellow;'
-                                    />
-                                    <span class='checkmark'></span>
-                                </label>
-                            </td>
-                            <td>
-                                <div
-                                    class='img'
-                                    style='background-image: url(https://res.cloudinary.com/dqx1h3eve/image/upload/v1687091721/lauboca_dfog51.jpg);'
-                                ></div>
-                                {{!-- <img src='{{this.image}}' alt='{{this.name}}' /> --}}
-                            </td>
-                            <td>
-                                <div class='email'>
-                                    {{!-- <span>{{this.name}}</span> --}}
-                                    <span>Lẩu bò hầm cà chua</span>
-                                    <br />
-                                    {{! <span>Fugiat voluptates quasi nemo, ipsa perferendis</span> }}
-                                </div>
-                            </td>
-                            <td style='color: gray;'>128000 VNĐ</td>
-                            <td class='quantity'>
-                                <div class='input-group'>
-                                    {{! <input type="text" name="quatity" class="quantity form-control input-number" value="2" min="1" max="100"> }}
-                                    <p>1</p>
-                                </div>
-                            </td>
-                            <td style='color: gray;'>128000 VNĐ</td>
-                            <td>
-                                <button
-                                    type='button'
-                                    class='close'
-                                    data-dismiss='alert'
-                                    aria0label='Close'
-                                >
-                                    <span aria-hidden='true'>
-                                        <i class='fa fa-close'></i>
-                                    </span>
-                                </button>
-                            </td>
-                        </tr>
+                        {{#each carts.items}}
+                            <tr class="alert" role="alert">
+                                {{!-- <td>
+                                    <label class="checkbox-wrap checkbox-primary">
+                                        <input type="checkbox" style="color: yellow;" />
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td> --}}
+                                <td>
+                                    <div class="img">
+                                        <img src="{{this.image}}" alt="{{this.name}}" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="email">
+                                        <span>{{this.name}}</span>
+                                    </div>
+                                </td>
+                                <td style="color: gray;">{{this.price}} VNĐ</td>
+                                <td class="quantity">
+                                    <div class="input-group">
+                                        <p>{{this.quantity}}</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        class="close btn btn-danger btn-sm delete-item"
+                                        data-dismiss="alert"
+                                        aria-label="Close"
+                                        data-item-id="{{this.id}}"
+                                    >
+                                        <span aria-hidden="true">
+                                            <i class="fa fa-close"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        {{/each}}
                     </tbody>
                 </table>
             </div>
         </div>
-
-        <div class='row justify-content-end'>
-            <div class='col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate'>
-                <div class='cart-total mb-3'>
-                    {{! <h3>Tổng tiền</h3>
-                    <p class='d-flex' style='color: gray;'>
-                        <span>Subtotal</span>
-                        <span>$20.60</span>
-                    </p>
-                    <p class='d-flex' style='color: gray;'>
-                        <span>Delivery</span>
-                        <span>$0.00</span>
-                    </p>
-                    <p class='d-flex' style='color: gray;'>
-                        <span>Discount</span>
-                        <span>$3.00</span>
-                    </p>
-                    <hr /> }}
-                    <p class='d-flex total-price'>
-                        <span style='color: gray;'>Tổng tiền</span>
-                        <span>128000 VNĐ</span>
+        <div class="row justify-content-end">
+            <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
+                <div class="cart-total mb-3">
+                    <p class="d-flex total-price">
+                        <span style="color: gray;">Tổng tiền</span>
+                        <span>{{carts.total}} VNĐ</span>
                     </p>
                 </div>
-                <p class='text-center'><a
-                        href='/cart/booking'
-                        class='btn btn-primary py-3 px-4'
-                    >Mua hàng</a></p>
+                <p class="text-center">
+                    <a href="/order/booking" class="btn btn-primary py-3 px-4">Mua hàng</a>
+                </p>
             </div>
         </div>
     </div>
 </section>
+
+
+<form name="delete-product-form" method="POST"></form>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const deleteButtons = document.querySelectorAll(".delete-item");
+    let deleteForm = document.forms['delete-product-form']
+    
+  deleteButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+      const itemId = button.dataset.itemId;
+            deleteForm.action = '/cart/product/' + itemId + '?_method=DELETE';
+            deleteForm.submit()
+        .then((response) => {
+          if (response.ok) {
+            // Xóa hàng sản phẩm tương ứng khỏi giao diện
+            const row = button.closest("tr");
+            row.parentNode.removeChild(row);
+            return response.json();
+          }
+          throw new Error("Yêu cầu xóa sản phẩm thất bại");
+        })
+        .then((data) => {
+          console.log(data.message); // In thông báo thành công
+        })
+        .catch((error) => {
+          console.error("Lỗi khi xóa sản phẩm:", error);
+        });
+    });
+  });
+});
+
+</script>

@@ -39,6 +39,7 @@
                             background: #fff;
                             border-bottom: 4px solid #f8f9fd;
                             vertical-align: middle;
+                            padding-left: 0;
                             .checkbox-primary{
                                 color: #b7472a;
                                 display: block;
@@ -60,24 +61,23 @@
                                         color: #b7472a;
                                     }
                                 }
-                                .checkmark {
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    &::after{                                  
-                                        content: "\f0c8";
-                                        font-family: "FontAwesome";
-                                        position: absolute;
-                                        color: rgba(0, 0, 0, 0.1);
-                                        font-size: 20px;
-                                        margin-top: -14px;
-                                        transition: all 0.3s ease;
-                                    }
-                                }
+                                // .checkmark {
+                                //     position: absolute;
+                                //     top: 0;
+                                //     left: 0;
+                                //     &::after{                                  
+                                //         content: "\f0c8";
+                                //         font-family: "FontAwesome";
+                                //         position: absolute;
+                                //         color: rgba(0, 0, 0, 0.1);
+                                //         font-size: 20px;
+                                //         margin-top: -14px;
+                                //         transition: all 0.3s ease;
+                                //     }
+                                // }
                             }
                             .img{
-                                width: 70px;
-                                height: 80px;
+                                width: 80px;
                                 background-size: cover;
                                 background-repeat: no-repeat;
                                 background-position: center center;
